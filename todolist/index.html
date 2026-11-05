@@ -9,28 +9,75 @@
     <script src="script.js"></script>
 </head>
 
-<body x-data="">
+
+
+<body x-data="{darkMode: localStorage.getItem('dark') === 'true', dyslexie: localStorage.getItem('dys') === 'true', taches : JSON.parse(localStorage.getItem('taches')) || [], avancement : JSON.parse(localStorage.getItem('avancement')) || []}
+	
+
+">
+	<div :class="{dark: darkMode, dyslexie: dyslexie}">
 	<header>
 		<h1>Ma liste de tâches</h1>
 	</header>
 
-	<div class="{dark: darkMode}">
+	
         <h2>Préférences</h2>
-        darkMode
-            <button @click ="darkMode = !darkMode" >
+            <button @click ="darkMode = !darkMode, localStorage.setItem('dark', darkMode)" >
                 Changer de thème
             </button>
+			<button @click="dyslexie = !dyslexie, localStorage.setItem('dys', dyslexie)">
+				Lecture facilitée
+			</button>
 
         <h2>Ajouter une tâche</h2>
 
+		<input type="text" x-on:keydown.escape="open = false" x-ref="tache" placeholder="Nouvelle tache...">
+		<button @click="
+		taches.push($refs.tache.value)
+
+		localStorage.setItem('taches',JSON.stringify(taches)),
+		avancement.push(false),
+
+		localStorage.setItem('avancement',JSON.stringify(avancement)),
+		$refs.tache.value = ''">Ajouter</button>
+
+
         <h2>Statistiques</h2>
 
+		<p>Total : <span x-text="taches.length"></span></p>
+		<p>Terminées : <span x-text="avancement.filter(a => a).length"></span></p>
+		<p>Restantes : <span x-text="taches.length - avancement.filter(a => a).length"></span></p>
+
         <h2>Mes tâches</h2>
+
+		<template x-for="(tache, index) in taches" :key="index">
+
+			<div>
+				<input type="checkbox" x-model="avancement[index]"
+					@change="
+					localStorage.setItem('avancement', JSON.stringify(avancement))">
+
+				<label x-text="tache"></label>
+
+				<button @click="
+					taches.splice(index, 1);
+					avancement.splice(index, 1);
+
+					localStorage.setItem('taches', JSON.stringify(taches));
+					localStorage.setItem('avancement', JSON.stringify(avancement));
+					">
+					x
+        		</button>
+			</div>
+
+		</template>
+		
+		<p x-show="taches.length === 0">Aucune tâche pour le moment.</p>
 			
-	</div>
 	
 	<footer>
 	</footer>
-
+</div>
 </body>
+
 </html>
