@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>ToDo list</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="style.css">
+    <script defer src="https://unpkg.com/alpinejs@3.0.0/dist/cdn.min.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body x-data="">
+	<header>
+		<h1>Ma liste de tâches</h1>
+	</header>
+
+	<div class="{dark: darkMode}">
+        <h2>Préférences</h2>
+        darkMode
+            <button @click ="darkMode = !darkMode" >
+                Changer de thème
+            </button>
+
+        <h2>Ajouter une tâche</h2>
+
+        <h2>Statistiques</h2>
+
+        <h2>Mes tâches</h2>
+			
+	</div>
+	
+	<footer>
+	</footer>
+
+</body>
+</html>
